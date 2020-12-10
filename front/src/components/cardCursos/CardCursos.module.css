@@ -1,0 +1,29 @@
+.cardCurso {
+  box-shadow: 5px 5px rgba(55, 0, 179, 0.1);
+  animation: fadeIn 2s forwards 1;
+}
+
+.cardCurso > img {
+  filter: brightness(50%);
+  height: 100%;
+}
+
+.cardCurso .cardCursoBodyHover {
+  transition: all 0.15s linear;
+}
+
+.cardCurso:hover .cardCursoBodyHover {
+  padding-left: 25px;
+  padding-top: 25px;
+}
+
+.cardCursoBody {
+  position: absolute;
+  color: white;
+}
+
+.bottom-left {
+  position: relative;
+  bottom: 8px;
+  left: 16px;
+}

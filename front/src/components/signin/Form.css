@@ -1,0 +1,31 @@
+.form-input {
+  display: block;
+  padding-left: 10px;
+  outline: none;
+  border-radius: 2px;
+  height: 40px;
+  border: none;
+}
+
+.form-inputs {
+  margin-bottom: 0.9rem;
+}
+
+.container-signin {
+  margin-top: 1rem;
+}
+
+.text-form-signin {
+  text-align: center;
+}
+
+.section-as-signin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-step-signin {
+  max-width: 1024px;
+  margin-top: 0px;
+}

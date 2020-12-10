@@ -1,0 +1,24 @@
+
+.app-chatbot-button-icon {
+    width: 25px;
+    height: 25px;
+    fill: #1f3646;
+}
+.app-chatbot-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #03dac6;
+    border: 1px solid #1f3646;
+    position: fixed;
+    bottom: 15px;
+    z-index: 9999;
+    right: 40px;
+}
+
+.move-to-left-chatbot {
+    position: fixed;
+    bottom: 65px;
+    z-index: 9999;
+    right: 40px;
+}

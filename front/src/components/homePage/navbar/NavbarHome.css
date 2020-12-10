@@ -1,0 +1,24 @@
+.btn--signin-decoration:hover {
+  text-decoration: none;
+  color: #6200ee !important;
+}
+
+.element--navbar-color {
+  color: #ffffffcc !important;
+}
+
+.element--navbar-color2 {
+  color: #ffefefcc !important;
+}
+
+.element--navbar-color2:hover {
+  color: #ffffff !important;
+}
+
+#collasible-nav-dropdown {
+  color: #ffefefcc !important;
+}
+
+#collasible-nav-dropdown:hover {
+  color: #ffffff !important;
+}

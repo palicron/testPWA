@@ -1,0 +1,16 @@
+.imagen-qrqr{
+    width: 50%;
+    height: 70%;
+    overflow: hidden;
+}
+
+.container-img-qr {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+.text-center-edit-activity {
+    text-align: center;
+}
+

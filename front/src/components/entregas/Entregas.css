@@ -1,0 +1,10 @@
+.img-40-entregas {
+  width: 40px;
+}
+.menu-list-entregas {
+  cursor: pointer;
+}
+
+.bottom-entregas {
+  z-index: -1;
+}

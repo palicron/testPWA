@@ -1,0 +1,148 @@
+:root {
+  --primary-button: #fff;
+}
+
+.btn-button {
+  text-align: center;
+  line-height: 1.4;
+  font-weight: 400;
+  font-size: 1rem;
+  color: #fff;
+  outline: none;
+  padding: 12px 35px;
+  margin: 0 5px;
+  border-radius: 100px;
+  border: 1px solid #fff;
+  background: transparent;
+}
+
+.btn--primary-button {
+  background-color: var(--primary-button);
+  color: #242424;
+  border: 1px solid var(--primary-button);
+}
+
+.btn--outline-button {
+  background-color: transparent;
+  color: #fff;
+  padding: 8px 20px;
+  border: 1px solid var(--primary-button);
+  transition: all 0.3s ease-out;
+}
+
+.btn--medium-button {
+  padding: 8px 20px;
+  font-size: 18px;
+}
+
+.btn--large-button {
+  padding: 12px 26px;
+  font-size: 20px;
+}
+
+.btn--mobile-button {
+  text-align: center;
+  border-radius: 4px;
+  width: 80%;
+  text-decoration: none;
+  font-size: 1.5rem;
+  background-color: transparent;
+  color: #fff;
+  padding: 14px 20px;
+  border: 1px solid #fff;
+  transition: all 0.3s ease-out;
+}
+
+.btn--wide-button {
+  padding: 12px 64px;
+  font-size: 20px;
+}
+
+.btn--large-button:hover,
+.btn--medium-button:hover,
+.btn--mobile-button:hover {
+  transition: all 0.3s ease-out;
+  background: #fff;
+  color: #242424;
+}
+
+.btn--wide-button:hover {
+  color: #fff;
+  background-color: #3700b3;
+  transition: all 0.2s ease-out;
+}
+
+.btn-link-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  padding: 8px 16px;
+  height: 100%;
+  width: 100%;
+}
+
+.blue-button {
+  background-color: #6200ee;
+  color: #fff;
+  border: none;
+}
+
+
+.primary-button {
+  background-color: #242424;
+  color: #fff;
+  border: none;
+}
+
+.primary-button:hover {
+  background-color: #fff;
+  color: #242424;
+  border: none;
+}
+
+
+
+.green-button {
+  background: linear-gradient(
+    90deg,
+    rgb(3, 218, 198) 0%,
+    rgb(9, 181, 224) 100%
+  );
+  color: #fff;
+  border: none;
+}
+
+.white-button  {
+  border: 1px solid #fff;
+  border-radius: 100px;
+  margin: 0 5px;
+  padding: 12px 35px;
+  outline: none;
+  color: #fff;
+  background-color: transparent;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.white-button:hover {
+  color: #018786;
+  background: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 1030px) { 
+
+.white-button  {
+  
+  background-color: #6200ee;
+  color: #fff;
+  border: none;
+}
+
+  
+}
+

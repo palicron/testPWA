@@ -1,0 +1,30 @@
+/* Media list */
+
+.nextActivitiesRef {
+  color: black;
+  text-decoration: none;
+}
+
+.nextActivitiesRef:hover {
+  color: #6200ee;
+  text-decoration: none;
+}
+
+.img--width-20 {
+  width: 20%;
+}
+
+.mediaActivities {
+  border-radius: 8px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  animation: moveRight 1s forwards 1;
+}
+
+.mediaActivities > img {
+  border-radius: 8px;
+}
+
+.mediaImage--size-20 {
+  width: 64px;
+  height: 64px;
+}

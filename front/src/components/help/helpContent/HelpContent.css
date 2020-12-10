@@ -1,0 +1,28 @@
+.text-help-center {
+  text-align: center;
+  padding: 10px;
+}
+
+.bd-grid-as-help {
+  max-width: 1024px;
+}
+
+.description-as-help-sec {
+  margin: 4rem 0 5rem 0;
+}
+
+.container-help-page {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+}
+
+
+
+.container-description-help-page {
+    margin: 0 1rem 0 1rem;
+}
+
+.container-section-help-page {
+    margin: 0 1rem 0 1rem;
+}

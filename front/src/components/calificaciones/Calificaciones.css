@@ -1,0 +1,124 @@
+.banner-calificaciones {
+  height: 100%;
+  width: 95%;
+
+  border-radius: 5px;
+  padding-top: 15px;
+  padding-right: 20px;
+  padding-left: 1px;
+  padding-bottom: 15px;
+
+  box-shadow: initial;
+
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s;
+}
+#banner p {
+  color: rgb(90, 89, 89);
+  font-weight: bold;
+}
+hr {
+  border-top: 2px thick #6200ee;
+  width: 90%;
+  margin-top: 10px;
+}
+#PDFReader {
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+}
+#Format-container {
+  border: 1px ridge;
+  transition: all 0.4s;
+}
+
+#NextB,
+#BackB {
+  border-style: none;
+  background-color: #6300ee;
+  transition: all 0.4s;
+  color: white;
+  font-weight: bold;
+}
+#NextB:hover,
+#BackB:hover {
+  border-style: none;
+  background-color: #3600b3;
+}
+
+.btn-primary-calificar {
+  border-style: none;
+  color: #2d0808;
+  background-color: #35b1b1;
+  font-weight: bold;
+}
+.btn-primary-calificar:hover {
+  border-style: none;
+  background-color: #004d40;
+  color: #ffffff;
+}
+.input-nota {
+  width: 50px;
+  margin-left: -10px;
+}
+
+/* Search bar */
+.grade-bar {
+  margin-bottom: auto;
+  margin-top: auto;
+  height: 50px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+}
+
+.grade-input {
+  color: black;
+  border: 0;
+  outline: 0;
+  background: none;
+  width: 65px;
+  caret-color: transparent;
+  line-height: 40px;
+  transition: width 0.4s linear;
+  padding-right: 5px;
+  padding-left: 20px;
+  margin-right: -20px;
+}
+
+.grade-bar:hover > .grade-input {
+  caret-color: #6200ee;
+  transition: width 0.4s linear;
+}
+
+.grade-bar:hover > .grade-icon {
+  background: white;
+  color: #6200ee;
+  text-decoration: none;
+}
+
+.grade-icon {
+  height: 40px;
+  width: 40px;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: #016363;
+  text-decoration: none;
+}
+
+.flecha {
+  cursor: pointer;
+  color: #3600b3;
+}
+
+.imagen-calificacion-Calificaciones {
+  width: 95%;
+}
+
+.pdf-calificacion-Calificaciones {
+  min-height: 500px;
+}

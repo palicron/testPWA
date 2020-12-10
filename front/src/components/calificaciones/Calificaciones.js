@@ -1,0 +1,311 @@
+import React, { useState, useEffect, useContext } from "react";
+import "./Calificaciones.css";
+import PDF1 from "../../assets/files/bard.pdf";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { AppContext } from "../../context/AppContext";
+
+const botAPI1 = "1417949140:AAEMbyqRd2GTDEXYjz2xZ-a9RGQ4kmT69qE";
+let urlBotAPI = "https://api.telegram.org/bot" + botAPI1 + "/getFile?file_id=";
+let urlBotAPI2 = "https://api.telegram.org/file/bot" + botAPI1 + "/";
+
+let posicion = 0;
+export default function Calificaciones() {
+  const [dataC] = useContext(AppContext);
+  console.log(dataC);
+  const [entregas, setEntregas] = useState(null);
+  const [porcentaje, setPorcentaje] = useState(0);
+  const { handleSubmit, register, errors } = useForm();
+  const [file, setFile] = useState("");
+  const onSubmit = (values) => calificar(values);
+  let actividad = dataC.idAct;
+  let idEntrega = dataC.idEntrega;
+  let url = "/omicron/entrega/" + actividad + "/actividad";
+
+  useEffect(() => {
+    axios
+      .get(url)
+      .then((responseEntregas) => {
+        // Obtenemos los datos
+        axios
+          .get("/omicron/estudiantes")
+          .then((response) => {
+            // Obtenemos los datos
+            let datos = [];
+            let calificados = 0;
+            responseEntregas.data.forEach((element) => {
+              if (!element["submission"].startsWith("http")) {
+                axios
+                  .get(urlBotAPI + element["submission"])
+                  .then((responseBot) => {
+                    datos.find((x) => x._id === element._id)["submission"] =
+                      urlBotAPI2 + responseBot.data.result.file_path;
+                    console.log(element["submission"]);
+                  });
+              }
+
+              if (element["grade"] == null || element["grade"] == "")
+                calificados = calificados + 1;
+
+              response.data.forEach((stu) => {
+                if (stu["_id"] == element["student"])
+                  datos.push({ ...element, firstName: stu["firstName"] });
+              });
+            });
+
+            setPorcentaje(
+              ((responseEntregas.data.length - calificados) /
+                responseEntregas.data.length) *
+                100,
+            );
+
+            let actual = datos.find((x) => x._id === idEntrega);
+            setEntrega(actual);
+
+            setEntregas(datos);
+          })
+          .catch((e) => {
+            // Capturamos los errores
+            console.log(e);
+          });
+      })
+      .catch((e) => {
+        // Capturamos los errores
+        console.log(e);
+      });
+  },[]);
+
+  const [entrega, setEntrega] = useState(null);
+  const next = () => {
+    posicion = posicion + 1;
+    if (entregas.length - 1 < posicion) posicion = 0;
+    setEntrega(entregas[posicion]);
+
+    if (entrega.Imagenes != null) {
+      setFile(entrega.Imagenes[0]);
+    }
+  };
+
+  const prev = () => {
+    posicion = posicion - 1;
+    if (0 > posicion) posicion = entregas.length - 1;
+    setEntrega(entregas[posicion]);
+    if (entrega.Imagenes != null) setFile(entregas.Imagenes[0]);
+  };
+
+  const calPor = () => {
+    let complete_task = 0;
+    for (let i = 0; i < entregas.length; i++) {
+      if (entregas[i]["grade"] == null || entregas[i]["grade"] == "") {
+        complete_task++;
+      }
+    }
+    return (complete_task / entregas.length) * 100;
+  };
+
+  const calificar = (values) => {
+    console.log(values.grade)
+    console.log(values.comment)
+    entrega.grade=values.grade
+    entrega.comment=values.comment
+    let urlCalificar = "omicron/entrega/" + entrega._id;
+    axios.put(urlCalificar, entrega).then((resp) => {
+      console.log("repsuesta");
+      console.log(resp);
+      
+      //setPorcentaje(calPor());
+    });
+  };
+
+  return (
+    <main>
+      <div className="page-content container-fluid" id="content">
+        <div id="Banner" className="mx-3 banner-calificaciones">
+          <div id="banner" className="row">
+            <div className="col-2 text-center">
+              <Link
+                id="Returnbtn"
+                className="btn btn-light bg-white rounded-pill shadow-sm px-4"
+                to={"/entregas"}
+              >
+                <i className="fa fa-chevron-right mr-2 transformed180Left"></i>
+                Regresar
+              </Link>
+            </div>
+            <div className="col-lg-4 text-center">
+              <p id="Nombre_Actividad">{dataC.nameAct}</p>
+            </div>
+            <div className="col-lg-2 text-left">
+              <p>
+                Curso: {dataC.nameCourse}
+                <a id="Curso_Actividad"></a>
+              </p>
+            </div>
+            <div className="col-lg-4 text-light">
+              <p>
+                Calificado: {Math.round(porcentaje)}%<a id="Text-Cal-por"></a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <h1>Calificación</h1>
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <Link to="/home" className="breadcrumb-item-color">
+                  Home
+                </Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/materias" className="breadcrumb-item-color">
+                  Materias
+                </Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/actividades" className="breadcrumb-item-color">
+                  Actividades
+                </Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link to="/entregas" className="breadcrumb-item-color">
+                  Actividad - Entrega
+                </Link>
+              </li>
+              <li
+                className="breadcrumb-item breadcrumb-item-coloractive"
+                aria-current="page"
+              >
+                Calificar
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div className="text-center mx-3">
+          {entregas == null ? (
+            <h2>Cargando...</h2>
+          ) : (
+            <div className="row">
+              <div className="col-sm-12 col-md-6 col-lg-8">
+                {(entrega?.submission).endsWith(".png") ||
+                (entrega?.submission).endsWith(".jpg") ||
+                (entrega?.submission).endsWith(".jpeg") ? (
+                  <img
+                    src={entrega?.submission}
+                    className="imagen-calificacion-Calificaciones"
+                  ></img>
+                ) : (
+                  <object
+                    id="PDFReader"
+                    data={PDF1}
+                    type="application/pdf"
+                    className="pdf-calificacion-Calificaciones"
+                  >
+                    <p>
+                      It appears you don't have a PDF plugin for this browser.
+                      No biggie... you can
+                      <a href={PDF1}>Click here to download the PDF file.</a>
+                    </p>
+                  </object>
+                )}
+              </div>
+
+              <div
+                id="Format-container"
+                className="col-sm-12 col-md-6 col-lg-4"
+              >
+                <div className="text-center mt-3">
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="col-lg-12">
+                      <h2>Estudiante</h2>
+                      <hr />
+                      <p id="Nombre_estudiante">{entrega.firstName}</p>
+                    </div>
+                    <hr />
+                    <div className="form-group col-lg-12 text-center">
+                      <h3>Calificación</h3>
+
+                      <div id="searchSection" className="mx-3">
+                        <div className="d-flex justify-content-center">
+                          <div className="grade-bar">
+                            <label for="grade" className="color--white-home">
+                              -
+                            </label>
+                            <input
+                              className="filter grade-input"
+                              type="text"
+                              name="grade"
+                              ref={register()}
+                              value={entrega.grade == null || entrega.grade == "" ? "": entrega.grade}
+                              id="grade"
+                            />
+                            <a href="#" className="grade-icon">
+                              /5
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row-cols-12 text-center">
+                      {entrega.grade == null || entrega.grade == "" ? (
+                        <p id="Alert">Necesita calificar</p>
+                      ) : (
+                        <p id="Alert">Calificado</p>
+                      )}
+                    </div>
+
+                    <div className="form-group col-lg-12 text-left">
+                      
+                        <hr />
+                        <div id="Colapse_coments" className="">
+                          <ul id="Comment_list" className="list col-lg-12">
+                            <li id="inner-item"></li>
+                          </ul>
+                          <div className="form-group">
+                            <label for="comentario">Comentario</label>
+
+                            <textarea
+                              placeholder={entrega.comment}
+                              id="comentario"
+                              name="comment"
+                              ref={register()}
+                              className="form-control "
+                            ></textarea>
+                          </div>
+                        </div>
+                      
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-primary-calificar col-12"
+                      >
+                        {(entrega?.grade == null || entrega?.grade == "")?<>Calificar</>:<>Actualizar</>}
+                      </button>
+                    </div>
+                  </form>
+                  <hr />
+                  <div className="row text-center">
+                    <div className="col-6">
+                      <i
+                        onClick={prev}
+                        className=" flecha fa fa-arrow-left"
+                      ></i>
+                    </div>
+                    <div className="col-6">
+                      <i
+                        onClick={next}
+                        className=" flecha fa fa-arrow-right"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}

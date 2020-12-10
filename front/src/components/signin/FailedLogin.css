@@ -1,0 +1,26 @@
+.container-user-not {
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    border-radius: 25px;
+    height: 100vh;
+    text-align: center;
+    padding: 25px;
+}
+
+.wrap-user-not {
+    display: flex;
+    justify-content: center;
+    margin: 8rem;
+    justify-items: center;
+}
+
+.btn-failed-login {
+    margin: 1rem 0 1rem 0;
+}
+
+@media screen and (min-width: 768px) {
+    .container-user-not {
+        height: 50vh;
+    }
+  }
+  

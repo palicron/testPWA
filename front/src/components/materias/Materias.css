@@ -1,0 +1,19 @@
+.bottomMargin {
+  margin-bottom: 30px;
+}
+
+#ft {
+  background-color: rgb(72, 75, 74);
+}
+
+.materias {
+  border: 4px ridge #019786;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.materia {
+  text-align: center;
+  margin-bottom: 30px;
+}

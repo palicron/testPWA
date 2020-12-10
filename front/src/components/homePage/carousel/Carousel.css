@@ -1,0 +1,48 @@
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: 100%;
+    color: #fff;
+    margin: 2rem 5px;
+    font-size: 4em;
+}
+
+.team-text-as {
+    text-align: center;
+}
+
+.members-as-name {
+    color: #343a40;
+    padding-top: 1rem;
+    text-align: center;
+}
+.carousel-container-as {
+    height: 60vh;
+    width: 100%;
+    margin-top: 4rem;
+}
+
+.bd-grid-carousel {
+    max-width: 1224px;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+    .bd-grid-carousel {
+        display: flex;
+        align-items: center;
+        text-align: initial;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .item {
+        margin: 2rem 56px;
+    }
+
+}
+
+

@@ -1,0 +1,18 @@
+.card-actividades {
+  box-shadow: 5px 5px rgba(55, 0, 179, 0.1);
+}
+
+.btn-primary-actividades {
+  border-style: none;
+  background-color: #028579;
+}
+.btn-primary-actividades:hover {
+  border-style: none;
+  background-color: #004d40;
+}
+.btn-edit-actividades {
+  margin-top: -110px;
+  margin-right: -105px;
+  position: absolute;
+  right: 100px;
+}

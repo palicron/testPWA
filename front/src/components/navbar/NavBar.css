@@ -1,0 +1,154 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+.vertical-nav {
+  min-width: 17rem;
+  width: 17rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s;
+}
+
+.icon--width-30 {
+  width: 30%;
+}
+
+.icon-width-30px {
+  width: 30px;
+}
+
+.text--name-sidebar {
+  font-size: x-large;
+}
+
+.page-content {
+  width: calc(100% - 17rem);
+  margin-left: 17rem;
+  transition: all 0.4s;
+}
+
+.listitem--hover-background:hover {
+  background: #a7b8b871;
+}
+
+/* Menu */
+
+#sidebar.active {
+  margin-left: -17rem;
+}
+
+#content.active {
+  width: 100%;
+  margin: 0;
+}
+
+.transformed180Left {
+  animation: rotation1 1s forwards 1;
+}
+
+.transformed180Right {
+  animation: rotation2 1s forwards 1;
+}
+
+/* Search bar */
+.searchbar {
+  margin-bottom: auto;
+  margin-top: auto;
+  height: 50px;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+}
+
+.search_input {
+  color: black;
+  border: 0;
+  outline: 0;
+  background: none;
+  width: 450px;
+  caret-color: transparent;
+  line-height: 40px;
+  transition: width 0.4s linear;
+  padding: 0 20px;
+}
+
+.searchbar:hover > .search_input {
+  caret-color: #6200ee;
+  transition: width 0.4s linear;
+}
+
+.searchbar:hover > .search_icon {
+  background: white;
+  color: #6200ee;
+}
+
+.search_icon {
+  height: 40px;
+  width: 40px;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: #018786;
+  text-decoration: none;
+}
+
+.color--gray-navbar {
+  color: #393f44;
+}
+
+/* Screen size */
+
+@media (max-width: 768px) {
+  #sidebar {
+    margin-left: -17rem;
+  }
+
+  #sidebar.active {
+    margin-left: 0;
+  }
+
+  #content {
+    width: 100%;
+    margin: 0;
+  }
+
+  #content.active {
+    margin-left: 17rem;
+    width: calc(100% - 17rem);
+  }
+
+  .transformed180Left {
+    animation: none;
+  }
+
+  .search_input {
+    width: 300px;
+  }
+}
+
+@keyframes rotation1 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+
+@keyframes rotation2 {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
