@@ -54,14 +54,14 @@ export default function Entregas() {
   let url = "/omicron/entrega/" + actividad + "/actividad";
 
   useEffect(() => {
-
+  console.log(navigator.onLine);
     if (!navigator.onLine) {
       if (sessionStorage.getItem("Entregas") === "" ) {
         setEntregas("Loading...");
         setUsuarios("Loading...");
       } else {
         setEntregas(JSON.parse(sessionStorage.getItem("Entregas")));
-        setUsuarios(JSON.parse((sessionStorage.getItem("Usuarios"));
+        setUsuarios(JSON.parse(sessionStorage.getItem("Usuarios")));
       }
     } else {
     axios
