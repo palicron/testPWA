@@ -17,7 +17,7 @@ export default function Curso() {
       if (sessionStorage.getItem("Cursos") === "") {
         setCursos("Loading...");
       } else {
-        setCursos(sessionStorage.getItem("Cursos"));
+        setCursos(JSON.parse(sessionStorage.getItem("Cursos")));
       }
     } else {
       axios.get(url_cursos).then((response) => {
