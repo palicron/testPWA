@@ -61,7 +61,7 @@ export default function Entregas() {
         setUsuarios("Loading...");
       } else {
         setEntregas(JSON.parse(sessionStorage.getItem("Entregas")));
-        setUsuariosJSON.parse((sessionStorage.getItem("Usuarios")));
+        setUsuarios(JSON.parse((sessionStorage.getItem("Usuarios"));
       }
     } else {
     axios
