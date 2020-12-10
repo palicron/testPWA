@@ -32,7 +32,7 @@ export default function Actividades() {
       if (sessionStorage.getItem("Actividad") === "") {
         setActividades("Loading...");
       } else {
-        setActividades(sessionStorage.getItem("Actividad"));
+        setActividades(JSON.parse(sessionStorage.getItem("Actividad")));
       }
     } else {
     axios

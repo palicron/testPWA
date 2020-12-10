@@ -24,7 +24,7 @@ export default function NavBar(props) {
       if (sessionStorage.getItem("UserData") === "") {
         setUserData("Loading...");
       } else {
-        setUserData(sessionStorage.getItem("UserData"));
+        setUserData(JSON.parse(sessionStorage.getItem("UserData")));
       }
     } else {
       axios

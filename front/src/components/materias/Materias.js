@@ -21,7 +21,7 @@ export default function Materias(props) {
       if (sessionStorage.getItem("Materias") === "") {
         setMaterias("Loading...");
       } else {
-        setMaterias(sessionStorage.getItem("Materias"));
+        setMaterias(JSON.parse(sessionStorage.getItem("Materias")));
       }
     } else {
     axios
