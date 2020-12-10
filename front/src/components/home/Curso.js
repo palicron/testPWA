@@ -29,7 +29,7 @@ export default function Curso() {
           }
         });
         setCursos(dataCorr);
-        sessionStorage.setItem("Cursos",JSON.stringify(response.data));
+        sessionStorage.setItem("Cursos",JSON.stringify(dataCorr));
       });
     }
   }, [url_cursos]);

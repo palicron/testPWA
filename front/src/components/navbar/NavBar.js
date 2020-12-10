@@ -33,7 +33,7 @@ export default function NavBar(props) {
           // Obtenemos los datos
           console.log(response.data);
           setUserData(response.data);
-          sessionStorage.setItem("UserData",JSON.stringify(dataCorr));
+          sessionStorage.setItem("UserData",JSON.stringify(response.data));
         })
         .catch((e) => {
           // Capturamos los errores
