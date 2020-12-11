@@ -196,6 +196,7 @@ export default function Entregas() {
               </h1>
             </div>
             <div className="col-md-3">
+              {navigator.onLine ? (
               <button
                 id="volverCurso"
                 type="button"
@@ -205,7 +206,8 @@ export default function Entregas() {
                 <a className="btn">
                   <FormattedMessage id="submissions.load" />
                 </a>
-              </button>
+              </button>):("")
+              }
             </div>
           </div>
 

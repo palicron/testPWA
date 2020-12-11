@@ -16,6 +16,7 @@ const useFormSignup = (callback, validate) => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [count, setCount] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,42 +32,48 @@ const useFormSignup = (callback, validate) => {
     e.preventDefault();
     setErrors(validate(values));
     setIsSubmitting(true);
-
-    let firstNameS = e.target.firstName.value;
-    let secondNameS = e.target.secondName.value;
-    let lastNameS = e.target.lastName.value;
-    let emailS = e.target.email.value;
-    let roleS = e.target.rol.value;
-    let schoolS = "5fa86ca13dfdc1f5996ce534";
-    let ratingS = 0;
-    let usernameS = e.target.username.value;
-
-    if (isSubmitting === true) {
-      axios
-        .post("/omicron/usuarios/", {
-          username: usernameS,
-          firstName: firstNameS,
-          secondName: secondNameS,
-          lastName: lastNameS,
-          email: emailS,
-          role: roleS,
-          school: schoolS,
-          rating: ratingS,
-        })
-        .then((response) => {
-          console.log(response);
-          history.push("/login");
-        })
-        .catch((e) => {
-          console.log(e);
-          history.push("/");
-        });
-    }
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
   };
 
+  const fetch = () => {
+    let firstNameS = values.firstName;
+    let secondNameS = values.secondName;
+    let lastNameS = values.lastName;
+    let emailS = values.email;
+    let roleS = values.rol;
+    let schoolS = "5fa86ca13dfdc1f5996ce534";
+    let ratingS = 0;
+    let usernameS = values.username;
+
+    axios
+      .post("/omicron/usuarios/", {
+        username: usernameS,
+        firstName: firstNameS,
+        secondName: secondNameS,
+        lastName: lastNameS,
+        email: emailS,
+        role: roleS,
+        school: schoolS,
+        rating: ratingS,
+      })
+      .then((response) => {
+        console.log(response);
+        history.push("/login");
+      })
+      .catch((e) => {
+        console.log(e);
+        history.push("/");
+      });
+  };
+  
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
+      fetch();
     }
   }, [errors]);
 

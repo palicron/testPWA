@@ -46,14 +46,13 @@ export default function Estadisticas() {
         })
       })
       setData(datos);
-      console.log("datos");
       sessionStorage.setItem("datosStat", JSON.stringify(datos));
     });
   }
   }, [estadisticas]);
 
   useEffect(() => {
-        if (!navigator.onLine) {
+    if (!navigator.onLine) {
       if (sessionStorage.getItem("cursoStat") === "") {
         setCursos("Loading...");
       } else {
@@ -67,9 +66,8 @@ export default function Estadisticas() {
       })
       setCursos(dataCursos);
       sessionStorage.setItem("cursoStat", JSON.stringify(dataCursos));
-      console.log("cursos");
     })
-  } 
+    } 
   }, []);
 
   useEffect(() => {
@@ -87,7 +85,6 @@ export default function Estadisticas() {
           dataMaterias.push(materia);
         })
         setMaterias(dataMaterias);
-        console.log("metarias");
         sessionStorage.setItem("matStat", JSON.stringify(dataMaterias));
       })
     }
@@ -95,12 +92,10 @@ export default function Estadisticas() {
   }, [curso]);
 
   function changePeriod(periodTxt, periodNum){
-
     setPeriodo(periodNum);
     setPeriodoTxt(periodTxt + " periodo");
     setEstadisticas("/" + periodNum);
     setCursoTxt("Seleccione un curso");
-   
     setCurso(null);
   }
 

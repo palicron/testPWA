@@ -151,6 +151,7 @@ export default function Actividades() {
             </div>
 
             <div className="col-sm-6 col-md-3">
+              { navigator.onLine ? (
               <button
                 className="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"
                 onClick={() => handleShow()}
@@ -162,7 +163,7 @@ export default function Actividades() {
                   className="icon-create"
                 ></img>
                 <FormattedMessage id="activities.add" />
-              </button>
+              </button>):("") }
             </div>
           </div>
 

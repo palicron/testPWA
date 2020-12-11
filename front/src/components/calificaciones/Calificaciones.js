@@ -35,7 +35,6 @@ export default function Calificaciones() {
   }
 
   useEffect(() => {
-
     if (!navigator.onLine) {
       if (sessionStorage.getItem("Actividad") === "") {
         setPorcentaje("Loading...");
@@ -102,7 +101,7 @@ export default function Calificaciones() {
         // Capturamos los errores
         console.log(e);
       });
-    } 
+    }
   }, []);
 
   const [entrega, setEntrega] = useState(null);
@@ -329,8 +328,8 @@ export default function Calificaciones() {
                               ></textarea>
                             </div>
                           </div>
-
-                          <button
+                          {navigator.onLine ? 
+                           ( <button
                             type="submit"
                             className="btn btn-primary btn-primary-calificar col-12"
                           >
@@ -340,7 +339,7 @@ export default function Calificaciones() {
                             ) : (
                               <FormattedMessage id="update" />
                             )}
-                          </button>
+                          </button>):("")}
                         </div>
                       </>
                     )}
