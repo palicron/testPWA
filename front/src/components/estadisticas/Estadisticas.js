@@ -10,11 +10,22 @@ export default function Estadisticas() {
   const [estadisticas, setEstadisticas] = useState(null);
 
   useEffect(() => {
+
+    if (!navigator.onLine) {
+      if (sessionStorage.getItem("Estadisticas") === "") {
+        setEstadisticas("Loading...");
+      } else {
+        setEstadisticas(JSON.parse(sessionStorage.getItem("Estadisticas")));
+      }
+    } else { 
     axios.get(url_estadísticas).then((response) => {
       console.log(response);
 
       setEstadisticas(response.data);
+      sessionStorage.setItem("Cursos",JSON.stringify(response.data));
     });
+
+  }
   }, [url_estadísticas]);
 
   let content = "No hay estadísticas disponibles.";
