@@ -38,7 +38,9 @@ export default function Calificaciones() {
 
     if (!navigator.onLine) {
       if (sessionStorage.getItem("Actividad") === "") {
-        setActividades("Loading...");
+        setPorcentaje("Loading...");
+        setEntrega("Loading...");
+        setEntregas("Loading...");
       } else {
         setPorcentaje(JSON.parse(sessionStorage.getItem("porcentajesCal")));
         setEntrega(JSON.parse(sessionStorage.getItem("entregaCal")));
