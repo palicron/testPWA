@@ -31,10 +31,10 @@ export default function Estadisticas() {
   
   useEffect(() => {
     if (!navigator.onLine) {
-      if (sessionStorage.getItem("datos") === "") {
+      if (sessionStorage.getItem("datosStat") === "") {
         setData("Loading...");
       } else {
-        setData(JSON.parse(sessionStorage.getItem("datos")));
+        setData(JSON.parse(sessionStorage.getItem("datosStat")));
       }
     } else {
     setData([]);
@@ -46,22 +46,38 @@ export default function Estadisticas() {
         })
       })
       setData(datos);
-      sessionStorage.setItem("datos", JSON.stringify(datos));
+      sessionStorage.setItem("datosStat", JSON.stringify(datos));
     });
   }
   }, [estadisticas]);
 
   useEffect(() => {
+        if (!navigator.onLine) {
+      if (sessionStorage.getItem("cursoStat") === "") {
+        setCursos("Loading...");
+      } else {
+        setCursos(JSON.parse(sessionStorage.getItem("cursoStat")));
+      }
+    } else {
     axios.get(url_cursos).then((response) => {
       let dataCursos = [];
       response.data.forEach(curso => {
         dataCursos.push(curso);
       })
       setCursos(dataCursos);
+      sessionStorage.setItem("cursoStat", JSON.stringify(dataCursos));
     })
+  } 
   }, []);
 
   useEffect(() => {
+    if (!navigator.onLine) {
+      if (sessionStorage.getItem("matStat") === "") {
+        setMaterias("Loading...");
+      } else {
+        setMaterias(JSON.parse(sessionStorage.getItem("matStat")));
+      }
+    } else {
     if (curso != null) {
       axios.get(url_materiasPrefijo + "/" + curso).then((response) => {
         let dataMaterias = [];
@@ -69,8 +85,10 @@ export default function Estadisticas() {
           dataMaterias.push(materia);
         })
         setMaterias(dataMaterias);
+        sessionStorage.setItem("matStat", JSON.stringify(dataMaterias));
       })
     }
+  }
   }, [curso]);
 
   function changePeriod(periodTxt, periodNum){
