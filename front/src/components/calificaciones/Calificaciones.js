@@ -35,6 +35,16 @@ export default function Calificaciones() {
   }
 
   useEffect(() => {
+
+    if (!navigator.onLine) {
+      if (sessionStorage.getItem("Actividad") === "") {
+        setActividades("Loading...");
+      } else {
+        setPorcentaje(JSON.parse(sessionStorage.getItem("porcentajesCal")));
+        setEntrega(JSON.parse(sessionStorage.getItem("entregaCal")));
+        setEntregas(JSON.parse(sessionStorage.getItem("entregasCal")));
+      }
+    } else {
     axios
       .get(url)
       .then((responseEntregas) => {
@@ -75,6 +85,11 @@ export default function Calificaciones() {
             setEntrega(actual);
 
             setEntregas(datos);
+            sessionStorage.setItem("porcentajesCal", JSON.stringify(     ((responseEntregas.data.length - calificados) /
+            responseEntregas.data.length) *
+            100,));
+            sessionStorage.setItem("entregaCal", JSON.stringify(actual));
+            sessionStorage.setItem("entregasCal", JSON.stringify(datos));
           })
           .catch((e) => {
             // Capturamos los errores
@@ -85,6 +100,7 @@ export default function Calificaciones() {
         // Capturamos los errores
         console.log(e);
       });
+    } 
   }, []);
 
   const [entrega, setEntrega] = useState(null);

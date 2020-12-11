@@ -21,6 +21,17 @@ export default function EditarActividad() {
   let url = "/omicron/actividad/" + actividadId;
 
   useEffect(() => {
+    if (!navigator.onLine) {
+      if (sessionStorage.getItem("Actividad") === "") {
+        setActividades("Loading...");
+      } else {
+        setActividades(JSON.parse(sessionStorage.getItem("ActividadEdit")));
+        SetDescripcion(JSON.parse(sessionStorage.getItem("DescripcionEdit")));
+        setPeriodo(JSON.parse(sessionStorage.getItem("PeriodoEdit")));
+        setPorcentaje(JSON.parse(sessionStorage.getItem("porcentajeEdit")));
+        setFecha(JSON.parse(sessionStorage.getItem("fechaEdit")));
+      }
+    } else {
     axios
       .get(url)
       .then((response) => {
@@ -37,11 +48,17 @@ export default function EditarActividad() {
         var yyyy = today.getFullYear();
         today = yyyy + "-" + mm + "-" + dd;
         setFecha(today);
+        sessionStorage.setItem("ActividadEdit", JSON.stringify(actual.name));
+        sessionStorage.setItem("DescripcionEdit", JSON.stringify(actual.description));
+        sessionStorage.setItem("PeriodoEdit", JSON.stringify(actual.period));
+        sessionStorage.setItem("porcentajeEdit", JSON.stringify(actual.percentage));
+        sessionStorage.setItem("fechaEdit", JSON.stringify(today));
       })
       .catch((e) => {
         // Capturamos los errores
         console.log(e);
       });
+    }
   }, [url]);
 
   function updateAct(value) {
