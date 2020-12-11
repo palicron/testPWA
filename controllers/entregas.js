@@ -136,7 +136,8 @@ function UpdateEntrega(body, entregaId) {
           { _id: ObjectId(entregaId) },
           {
             $set: {
-              grade: body.grade,
+              grade: body.grade, 
+              comment:body.comment
             },
           },
         )

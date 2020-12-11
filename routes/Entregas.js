@@ -22,6 +22,18 @@ const [
   GetSubmition
 ] = require("../controllers/entregas");
 
+const [
+  getStats, 
+  getStatsSubject, 
+  getStatsCourse, 
+  insertStats,
+  insertActivity,
+  addSubmission,
+  updateGrade,
+  deleteSubmission,
+  deleteActivity
+] = require("../controllers/statisticsActivities");
+
 //Get todas las entregas de la DB
 router.get("/", async function (req, res, next) { 
   const entregas = await GetAllSubmitions();
@@ -46,6 +58,9 @@ router.get("/:estudianteId/estudiante", async function (req, res, next) {
 router.post("/:actividadid/entrega/:estudianteid", async function (req, res, next) {
   //body{submission:url}
   const entrega = await addEntrega(req.body, req.params.actividadid, req.params.estudianteid);
+  const id = entrega.ops[0]._id;
+  const getEntrega = await GetSubmition(id);
+  const addSubmi = await addSubmission(getEntrega.activity);
   res.send(entrega);
 });
 router.post("/:entregaId", async function (req, res, next) {
@@ -56,6 +71,8 @@ router.post("/:entregaId", async function (req, res, next) {
 //Actuliza una entrega
 router.put("/:entregaId/", async function (req, res, next) {
   const materia = await UpdateEntrega(req.body, req.params.entregaId);
+  const getEntrega = await GetSubmition(req.params.entregaId);
+  const updateActividad = await updateGrade(getEntrega.activity, getEntrega.grade);
   res.send(materia);
 });
 router.delete("/:entregaId", async function (req, res, next) {

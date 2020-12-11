@@ -1,45 +1,96 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import infoImg from "../../assets/images/icons8-información-64.png";
+
 import PieChartEstadisticas from "../pieChartEstadisticas/PieChartEstadisticas";
+import Dropdown from 'react-bootstrap/Dropdown'
+import { AppContext } from "../../context/AppContext";
 import { Link } from "react-router-dom";
 import Loading from "../loading/Loading";
+import { FormattedMessage } from "react-intl";
 
 export default function Estadisticas() {
-  const url_estadísticas = "http://localhost:3001/omicron/estadisticas";
-  const [estadisticas, setEstadisticas] = useState(null);
+  const [periodoTxt, setPeriodoTxt] = useState("Primer Periodo");
+  const [periodo, setPeriodo] = useState(1);
+  const [cursoTxt, setCursoTxt] = useState("Seleccione un curso");
+  const [curso, setCurso] = useState(null);
+  const [cursos, setCursos] = useState([]);
+  const [materiaTxt, setMateriaTxt] = useState("Seleccione una materia");
+  const [materias, setMaterias] = useState([]);
+  const [dataGeneral, setDataGeneral] = useContext(AppContext);
+  const [estadisticas, setEstadisticas] = useState("/1");
+  const [data, setData] = useState([]);
+  const url_prefijo = "/omicron/estadisticas/" + dataGeneral.userId;
+  const url_cursos = "/omicron/cursos/teacher/" + dataGeneral.userId;
+  const url_materiasPrefijo = "/omicron/materias/teacher/" + dataGeneral.userId + "/course";
+
+  let loadingStatistics="Loading statistics"
+  if(navigator.language.startsWith('es')){
+    loadingStatistics="Cargando estadísticas"
+  }
+  
+  useEffect(() => {
+    if (!navigator.onLine) {
+      if (sessionStorage.getItem("datos") === "") {
+        setData("Loading...");
+      } else {
+        setData(JSON.parse(sessionStorage.getItem("datos")));
+      }
+    } else {
+    setData([]);
+    axios.get(url_prefijo + estadisticas).then((response) => {
+      let datos = [];
+      response.data.forEach((estadistica) => {
+          estadistica.cantidades.forEach(cantidad => {
+          datos.push(cantidad);
+        })
+      })
+      setData(datos);
+      sessionStorage.setItem("datos", JSON.stringify(datos));
+    });
+  }
+  }, [estadisticas]);
 
   useEffect(() => {
+    axios.get(url_cursos).then((response) => {
+      let dataCursos = [];
+      response.data.forEach(curso => {
+        dataCursos.push(curso);
+      })
+      setCursos(dataCursos);
+    })
+  }, []);
 
-    if (!navigator.onLine) {
-      if (sessionStorage.getItem("Estadisticas") === "") {
-        setEstadisticas("Loading...");
-      } else {
-        setEstadisticas(JSON.parse(sessionStorage.getItem("Estadisticas")));
-      }
-    } else { 
-    axios.get(url_estadísticas).then((response) => {
-      console.log(response);
+  useEffect(() => {
+    if (curso != null) {
+      axios.get(url_materiasPrefijo + "/" + curso).then((response) => {
+        let dataMaterias = [];
+        response.data.forEach(materia => {
+          dataMaterias.push(materia);
+        })
+        setMaterias(dataMaterias);
+      })
+    }
+  }, [curso]);
 
-      setEstadisticas(response.data);
-      sessionStorage.setItem("Cursos",JSON.stringify(response.data));
-    });
-
+  function changePeriod(periodTxt, periodNum){
+    setPeriodo(periodNum);
+    setPeriodoTxt(periodTxt + " periodo");
+    setEstadisticas("/" + periodNum);
+    setCursoTxt("Seleccione un curso");
+    setCurso(null);
   }
-  }, [url_estadísticas]);
 
-  let content = "No hay estadísticas disponibles.";
+  function changeCourse(course) {
+    setCursoTxt(course.name);
+    setCurso(course._id);
+    setEstadisticas("/" + periodo + "/" + course._id);
+    setMateriaTxt("Seleccione una materia")
+  }
 
-  let data = [];
-  let cont;
-
-  if (estadisticas) {
-    content = estadisticas.map((estadistica) =>
-      estadistica.cantidades.map((cantidad) => {
-        cont = cont + 1;
-        data[cont] = cantidad;
-      }),
-    );
+  function changeSubject(subject) {
+    setMateriaTxt(subject.name);
+    setEstadisticas("/" + periodo + "/" + curso + "/" + subject._id);
   }
 
   return (
@@ -63,18 +114,53 @@ export default function Estadisticas() {
                 <Link to="/home" className="breadcrumb-item-color">Home</Link>
               </li>
               <li className="breadcrumb-item breadcrumb-item-coloractive" aria-current="page">
-                Estadísticas
+                <FormattedMessage id="statistics"/>
               </li>
             </ol>
           </nav>
         </div>
         <div>
-            {estadisticas === null ? (
-              <Loading texto="Cargando estadisticas..."></Loading>
+            {data === [] ? (
+              <Loading texto={loadingStatistics}></Loading>
             ) : (
+        <div>
+        <div className="d-flex container-fluid">
+          <Dropdown>
+            <Dropdown.Toggle id="dropdown-basic">
+            {periodoTxt}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={()=> changePeriod("Primer", 1)}>Primer periodo</Dropdown.Item>
+              <Dropdown.Item onClick={()=> changePeriod("Segundo", 2)}>Segundo periodo</Dropdown.Item>
+              <Dropdown.Item onClick={()=> changePeriod("Tercer", 3)}>Tercer periodo</Dropdown.Item>
+              <Dropdown.Item onClick={()=> changePeriod("Cuarto", 4)}>Cuarto periodo</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown className = "mx-3">
+            <Dropdown.Toggle id="dropdown-cursos">
+            {cursoTxt}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {cursos.map((item) => (
+                <Dropdown.Item onClick={()=> changeCourse(item)}>{item.name}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Dropdown>
+            <Dropdown.Toggle id="dropdown-materias">
+            {materiaTxt}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {materias.map((item) => (
+                <Dropdown.Item onClick={()=> changeSubject(item)}>{item.name}</Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+
+        </div>
         <div className="container-fluid">
           <hr />
-          <h2 className="txt-muted">Estadisticas</h2>
+          <h2 className="txt-muted">Actividades</h2>
           <hr />
           <div className="row text-center">
             <div className="col">
@@ -89,8 +175,6 @@ export default function Estadisticas() {
                 />
               </span>
               <strong>Nota promedio</strong>
-              <br/>
-              3.68
               <div
                 className="h-100 d-flex justify-content-center align-items-center"
                 id="pie-actividades-nota"
@@ -120,7 +204,7 @@ export default function Estadisticas() {
                   className="mr-3 icon-width-30px"
                 />
               </span>
-              <strong>Cantidad de entregas</strong>
+              <strong><FormattedMessage id="statistics.submmit.quantity"/></strong>
               <div
                 className="h-100 d-flex justify-content-center align-items-center"
                 id="pie-actividades-entregados"
@@ -130,10 +214,10 @@ export default function Estadisticas() {
                   param2={"Más de la mitad"}
                   param3={"Menos de la mitad"}
                   param4={"Sin entregas"}
-                  data1={3}
-                  data2={0}
-                  data3={0}
-                  data4={34}
+                  data1={data[4]}
+                  data2={data[5]}
+                  data3={data[6]}
+                  data4={data[7]}
                   nombre={"Completitud"}
                   categoria={"Actividades calificadas"}
                 ></PieChartEstadisticas>
@@ -160,18 +244,84 @@ export default function Estadisticas() {
                   param2={"Más de la mitad"}
                   param3={"Menos de la mitad"}
                   param4={"Sin calificaciones"}
-                  data1={3}
-                  data2={0}
-                  data3={0}
-                  data4={0}
+                  data1={data[8]}
+                  data2={data[9]}
+                  data3={data[10]}
+                  data4={data[11]}
                   nombre={"Completitud"}
                   categoria={"Actividades calificadas"}
                 ></PieChartEstadisticas>
               </div>
             </div>
           </div>
+          <hr />
+          <h2 className="txt-muted">Estudiantes</h2>
+          <hr />
+          <div className="row text-center">
+            <div className="col">
+              <span
+                data-toggle="tooltip"
+                title="Aquí puede ver el porcentaje de estudiantes que tienen la nota promedio de la materia seleccionada en cierto rango."
+              >
+                <img
+                  src={infoImg}
+                  alt="info"
+                  className="mr-3 icon-width-30px"
+                />
+              </span>
+              <strong>Nota promedio</strong>
+              <div
+                className="h-100 d-flex justify-content-center align-items-center"
+                id="pie-actividades-nota"
+              >
+                <PieChartEstadisticas
+                  param1={"Superior"}
+                  param2={"Alto"}
+                  param3={"Básico"}
+                  param4={"Bajo"}
+                  data1={data[12]}
+                  data2={data[13]}
+                  data3={data[14]}
+                  data4={data[15]}
+                  nombre={"Nivel"}
+                  categoria={"Actividades"}
+                ></PieChartEstadisticas>
+              </div>
+            </div>
+            <div className="col">
+              <span
+                data-toggle="tooltip"
+                title="Aquí puede ver el porcentaje de estudiantes que han tenido cierto porcentaje de entregas de sus actividades asignadas."
+              >
+                <img
+                  src={infoImg}
+                  alt="info"
+                  className="mr-3 icon-width-30px"
+                />
+              </span>
+              <strong>Cantidad de entregas</strong>
+              <div
+                className="h-100 d-flex justify-content-center align-items-center"
+                id="pie-actividades-entregados"
+              >
+                <PieChartEstadisticas
+                  param1={"Completo"}
+                  param2={"Más de la mitad"}
+                  param3={"Menos de la mitad"}
+                  param4={"Sin entregas"}
+                  data1={data[16]}
+                  data2={data[17]}
+                  data3={data[18]}
+                  data4={data[19]}
+                  nombre={"Completitud"}
+                  categoria={"Actividades calificadas"}
+                ></PieChartEstadisticas>
+              </div>
+            </div>
           </div>
-            )}
+        </div>
+        </div>
+        )}
         </div>
       </div>
     </main>

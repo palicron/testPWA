@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import Modal from "react-bootstrap/Modal";
-import CardActividades from "../cardActividades/CardActividades";
 import AddAct from "../..//assets/images/addAct.png";
 import "./Actividades.css";
 import axios from "axios";
@@ -10,15 +9,9 @@ import Trash from "../../assets/images/trash.png";
 import Edit from "../../assets/images/icons8-edit-512.png";
 import Order from "../..//assets/images/order.png";
 import { AppContext } from "../../context/AppContext";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 import MaterialTable, { MTableToolbar } from "material-table";
+import { FormattedMessage, FormattedDate } from "react-intl";
 
 export default function Actividades() {
   const [dataC, setDataC] = useContext(AppContext);
@@ -26,7 +19,28 @@ export default function Actividades() {
   const [actividades, setActividades] = useState(null);
   let idMateria = dataC.idMateria;
   let url = "/omicron/actividad/" + idMateria + "/subject";
+  let loadingActivities = "Loading activities";
+  let editActivity = "Edit activity";
+  let deleteActivity = "Delete activity";
+  let tableTile = dataC.nameMateria + " activities in " + dataC.nameCourse;
+  let titleName = "Name";
+  let titleDueDate = "Due date";
+  let titleTerm = "Term";
+  let titlePercentage = "Percentage";
+  let dataPlaceholders = ["Name", "Description"];
 
+  if (navigator.language.startsWith("es")) {
+    loadingActivities = "Cargando actividades";
+    editActivity = "Editar actividad";
+    deleteActivity = "Eliminar actividad";
+    tableTile =
+      "Actividades de " + dataC.nameMateria + " en " + dataC.nameCourse;
+    titleName = "Nombre";
+    titleDueDate = "Fecha vencimiento";
+    titleTerm = "Periodo";
+    titlePercentage = "Porcentaje";
+    dataPlaceholders = ["Nombre", "Descripción"];
+  }
   useEffect(() => {
     if (!navigator.onLine) {
       if (sessionStorage.getItem("Actividad") === "") {
@@ -35,18 +49,18 @@ export default function Actividades() {
         setActividades(JSON.parse(sessionStorage.getItem("Actividad")));
       }
     } else {
-    axios
-      .get(url)
-      .then((response) => {
-        // Obtenemos los datos
-        console.log(response);
-        setActividades(response.data);
-        sessionStorage.setItem("Actividad",JSON.stringify(response.data));
-      })
-      .catch((e) => {
-        // Capturamos los errores
-        console.log(e);
-      });
+      axios
+        .get(url)
+        .then((response) => {
+          // Obtenemos los datos
+          console.log(response);
+          setActividades(response.data);
+          sessionStorage.setItem("Actividad", JSON.stringify(response.data));
+        })
+        .catch((e) => {
+          // Capturamos los errores
+          console.log(e);
+        });
     }
   }, [url]);
 
@@ -122,16 +136,18 @@ export default function Actividades() {
           <div className="row">
             <div className="col-md-9">
               <div className="col-sm-3 col-md-3">
-              <Link
-                id="Returnbtn"
-                className="btn btn-light bg-white rounded-pill shadow-sm px-4"
-                to={"/materias"}
-              >
-                <i className="fa fa-chevron-right mr-2 transformed180Left"></i>
-                Regresar
-              </Link>
+                <Link
+                  id="Returnbtn"
+                  className="btn btn-light bg-white rounded-pill shadow-sm px-4"
+                  to={"/materias"}
+                >
+                  <i className="fa fa-chevron-right mr-2 transformed180Left"></i>
+                  <FormattedMessage id="back" />
+                </Link>
               </div>
-                <h1 className="mt-2">Actividades</h1>
+              <h1 className="mt-2">
+                <FormattedMessage id="activities" />
+              </h1>
             </div>
 
             <div className="col-sm-6 col-md-3">
@@ -142,10 +158,10 @@ export default function Actividades() {
               >
                 <img
                   src={AddAct}
-                  alt="anadir actividad"
+                  alt="Add activity"
                   className="icon-create"
                 ></img>
-                Agregar Actividad
+                <FormattedMessage id="activities.add" />
               </button>
             </div>
           </div>
@@ -160,14 +176,14 @@ export default function Actividades() {
                 </li>
                 <li className="breadcrumb-item">
                   <Link to="/materias" className="breadcrumb-item-color">
-                    Materias
+                    <FormattedMessage id="subjects" />
                   </Link>
                 </li>
                 <li
                   className="breadcrumb-item breadcrumb-item-coloractive"
                   aria-current="page"
                 >
-                  Actividades
+                  <FormattedMessage id="activities" />
                 </li>
               </ol>
             </nav>
@@ -175,15 +191,15 @@ export default function Actividades() {
 
           <div>
             {actividades === null ? (
-              <Loading texto="Cargando actividades..."></Loading>
+              <Loading texto={loadingActivities}></Loading>
             ) : (
               <MaterialTable
-              options={{
-                exportButton: true
-              }}
+                options={{
+                  exportButton: true,
+                }}
                 icons={{
                   Export: () => <i className="flecha fa fa-download"></i>,
-                
+
                   NextPage: () => <i className=" flecha fa fa-arrow-right"></i>,
                   PreviousPage: () => (
                     <i className=" flecha fa fa-arrow-left"></i>
@@ -221,7 +237,7 @@ export default function Actividades() {
                         <img src={Edit} alt="eliminar" width="30px"></img>
                       </Link>
                     ),
-                    tooltip: "Editar actividad",
+                    tooltip: editActivity,
                     onClick: (event, rowData) => {
                       // Do save operation
                     },
@@ -230,7 +246,7 @@ export default function Actividades() {
                     icon: () => (
                       <img src={Trash} alt="eliminar" width="30px"></img>
                     ),
-                    tooltip: "Eliminar actividad",
+                    tooltip: deleteActivity,
                     onClick: (event, rowData) => {
                       idDelete = rowData._id;
                       setActividadEliminar({
@@ -245,13 +261,28 @@ export default function Actividades() {
                   actionsColumnIndex: -1,
                 }}
                 columns={[
-                  { title: "Nombre", field: "name" },
+                  { title: titleName, field: "name" },
 
-                  { title: "Fecha de entrega", field: "submissionDate",
-                  render:(rowData)=>(<>{rowData.submissionDate.split('T')[0]}</>) },
-                
-                  { title: "Periodo", field: "period" },
-                { title: "Porcentaje", field: "percentage", render:(rowData)=>(<>{rowData.percentage}%</>) },
+                  {
+                    title: titleDueDate,
+                    field: "submissionDate",
+                    render: (rowData) => (
+                      <FormattedDate
+                        value={new Date(rowData.submissionDate.split("T")[0])}
+                        year="numeric"
+                        month="short"
+                        day="numeric"
+                        weekday="long"
+                      />
+                    ),
+                  },
+
+                  { title: titleTerm, field: "period" },
+                  {
+                    title: titlePercentage,
+                    field: "percentage",
+                    render: (rowData) => <>{rowData.percentage}%</>,
+                  },
                   {
                     title: "",
                     field: "httpLink",
@@ -268,49 +299,52 @@ export default function Actividades() {
                           });
                         }}
                       >
-                        Ver entregas
+                        <FormattedMessage id="activities.see.assignment" />
                       </Link>
                     ),
                   },
                 ]}
                 data={actividades}
-                title={
-                  "Actividades de " +
-                  dataC.nameMateria +
-                  " en " +
-                  dataC.nameCourse
-                }
+                title={tableTile}
               />
             )}
           </div>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Crear actividad </Modal.Title>
+              <Modal.Title>
+                <FormattedMessage id="activities.create" />{" "}
+              </Modal.Title>
             </Modal.Header>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Modal.Body>
                 <div className="form-group">
-                  <label for="nombreActividad">Nombre de la actividad:</label>
+                  <label htmlFor="nombreActividad">
+                    <FormattedMessage id="activities.name" />:
+                  </label>
                   <input
                     type="text"
                     className="form-control"
                     name="nombreActividad"
-                    placeholder="Nombre"
+                    placeholder={dataPlaceholders[0]}
                     ref={register()}
                   />
                 </div>
                 <div className="form-group">
-                  <label for="descripcion">Descripcion de la actividad:</label>
+                  <label htmlFor="descripcion">
+                    <FormattedMessage id="activities.description" />
+                  </label>
                   <input
                     type="text"
                     className="form-control"
                     name="descripcion"
-                    placeholder="Descripcion"
+                    placeholder={dataPlaceholders[1]}
                     ref={register()}
                   />
                 </div>
                 <div className="form-group">
-                  <label for="fechaVencimiento">Fecha vencimiento:</label>
+                  <label htmlFor="fechaVencimiento">
+                    <FormattedMessage id="due.date" />:
+                  </label>
                   <input
                     type="date"
                     className="form-control"
@@ -319,7 +353,9 @@ export default function Actividades() {
                   />
                 </div>
                 <div className="form-group">
-                  <label for="periodo">Periodo:</label>
+                  <label htmlFor="periodo">
+                    <FormattedMessage id="term" />:
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -329,7 +365,9 @@ export default function Actividades() {
                   />
                 </div>
                 <div className="form-group">
-                  <label for="porcentaje">Porcentaje:</label>
+                  <label htmlFor="porcentaje">
+                    <FormattedMessage id="percentage" />:
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -345,33 +383,34 @@ export default function Actividades() {
                   type="button"
                   onClick={handleClose}
                 >
-                  Cancelar
+                  <FormattedMessage id="cancel" />
                 </button>
                 <button
                   className="btn btn-primary"
                   type="submit"
                   onClick={handleClose}
                 >
-                  Crear actividad
+                  <FormattedMessage id="activities.create" />
                 </button>
               </Modal.Footer>
             </form>
           </Modal>
           <Modal show={eliminar} onHide={setEliminar}>
             <Modal.Header closeButton>
-              <Modal.Title>Eliminar actividad </Modal.Title>
+              <Modal.Title>
+                <FormattedMessage id="activities.delete" />{" "}
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {"¿Está seguro de eliminar la actividad " +
-                actividadEliminar?.name +
-                " ?"}
+              <FormattedMessage id="activities.confirm.delete" />
+              {actividadEliminar?.name + " ?"}
             </Modal.Body>
             <Modal.Footer>
               <button
                 className="btn btn-secondary"
                 onClick={() => setEliminar(false)}
               >
-                Cancelar
+                <FormattedMessage id="cancel" />
               </button>
               <button
                 className="btn btn-primary"
@@ -380,7 +419,7 @@ export default function Actividades() {
                   eliminarActividad(actividadEliminar?._id);
                 }}
               >
-                Eliminar actividad
+                <FormattedMessage id="activities.delete" />
               </button>
             </Modal.Footer>
           </Modal>

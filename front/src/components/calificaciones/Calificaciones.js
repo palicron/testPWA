@@ -5,6 +5,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { AppContext } from "../../context/AppContext";
+import Loading from "../loading/Loading";
+
+import { FormattedMessage } from "react-intl";
 
 const botAPI1 = "1417949140:AAEMbyqRd2GTDEXYjz2xZ-a9RGQ4kmT69qE";
 let urlBotAPI = "https://api.telegram.org/bot" + botAPI1 + "/getFile?file_id=";
@@ -14,14 +17,22 @@ let posicion = 0;
 export default function Calificaciones() {
   const [dataC] = useContext(AppContext);
   console.log(dataC);
+  const [updating, setUpdating] = useState(false);
   const [entregas, setEntregas] = useState(null);
   const [porcentaje, setPorcentaje] = useState(0);
-  const { handleSubmit, register, errors } = useForm();
+  const { handleSubmit, register } = useForm();
   const [file, setFile] = useState("");
   const onSubmit = (values) => calificar(values);
   let actividad = dataC.idAct;
   let idEntrega = dataC.idEntrega;
   let url = "/omicron/entrega/" + actividad + "/actividad";
+
+  let loadingSub = "Loading submission";
+  let updatingSub = "Updating submission";
+  if (navigator.language.startsWith("es")) {
+    loadingSub = "Cargando entrega";
+    updatingSub = "Actualizando calificación";
+  }
 
   useEffect(() => {
     axios
@@ -45,11 +56,11 @@ export default function Calificaciones() {
                   });
               }
 
-              if (element["grade"] == null || element["grade"] == "")
+              if (element["grade"] === null || element["grade"] === "")
                 calificados = calificados + 1;
 
               response.data.forEach((stu) => {
-                if (stu["_id"] == element["student"])
+                if (stu["_id"] === element["student"])
                   datos.push({ ...element, firstName: stu["firstName"] });
               });
             });
@@ -74,7 +85,7 @@ export default function Calificaciones() {
         // Capturamos los errores
         console.log(e);
       });
-  },[]);
+  }, []);
 
   const [entrega, setEntrega] = useState(null);
   const next = () => {
@@ -97,7 +108,7 @@ export default function Calificaciones() {
   const calPor = () => {
     let complete_task = 0;
     for (let i = 0; i < entregas.length; i++) {
-      if (entregas[i]["grade"] == null || entregas[i]["grade"] == "") {
+      if (entregas[i]["grade"] === null || entregas[i]["grade"] === "") {
         complete_task++;
       }
     }
@@ -105,19 +116,21 @@ export default function Calificaciones() {
   };
 
   const calificar = (values) => {
-    console.log(values.grade)
-    console.log(values.comment)
-    entrega.grade=values.grade
-    entrega.comment=values.comment
+    setUpdating(true);
+    console.log(values.grade);
+    console.log(values.comment);
+    entrega.grade = values.grade;
+    entrega.comment = values.comment;
     let urlCalificar = "omicron/entrega/" + entrega._id;
     axios.put(urlCalificar, entrega).then((resp) => {
+      console.log(urlCalificar);
+      console.log(entrega);
       console.log("repsuesta");
       console.log(resp);
-      
+      setUpdating(false);
       //setPorcentaje(calPor());
     });
   };
-
   return (
     <main>
       <div className="page-content container-fluid" id="content">
@@ -130,7 +143,7 @@ export default function Calificaciones() {
                 to={"/entregas"}
               >
                 <i className="fa fa-chevron-right mr-2 transformed180Left"></i>
-                Regresar
+                <FormattedMessage id="back" />
               </Link>
             </div>
             <div className="col-lg-4 text-center">
@@ -138,19 +151,22 @@ export default function Calificaciones() {
             </div>
             <div className="col-lg-2 text-left">
               <p>
-                Curso: {dataC.nameCourse}
+                <FormattedMessage id="course" />: {dataC.nameCourse}
                 <a id="Curso_Actividad"></a>
               </p>
             </div>
             <div className="col-lg-4 text-light">
               <p>
-                Calificado: {Math.round(porcentaje)}%<a id="Text-Cal-por"></a>
+                <FormattedMessage id="graded.percentage" />:{" "}
+                {Math.round(porcentaje)}%<a id="Text-Cal-por"></a>
               </p>
             </div>
           </div>
         </div>
         <hr />
-        <h1>Calificación</h1>
+        <h1>
+          <FormattedMessage id="grading.center" />
+        </h1>
         <div>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
@@ -161,31 +177,33 @@ export default function Calificaciones() {
               </li>
               <li className="breadcrumb-item">
                 <Link to="/materias" className="breadcrumb-item-color">
-                  Materias
+                  <FormattedMessage id="subjects" />
                 </Link>
               </li>
               <li className="breadcrumb-item">
                 <Link to="/actividades" className="breadcrumb-item-color">
-                  Actividades
+                  <FormattedMessage id="activities" />
                 </Link>
               </li>
               <li className="breadcrumb-item">
                 <Link to="/entregas" className="breadcrumb-item-color">
-                  Actividad - Entrega
+                  <FormattedMessage id="activity.submissions" />
                 </Link>
               </li>
               <li
                 className="breadcrumb-item breadcrumb-item-coloractive"
                 aria-current="page"
               >
-                Calificar
+                <FormattedMessage id="grading.center" />
               </li>
             </ol>
           </nav>
         </div>
         <div className="text-center mx-3">
           {entregas == null ? (
-            <h2>Cargando...</h2>
+            <h2>
+              <Loading texto={loadingSub} />
+            </h2>
           ) : (
             <div className="row">
               <div className="col-sm-12 col-md-6 col-lg-8">
@@ -219,70 +237,95 @@ export default function Calificaciones() {
                 <div className="text-center mt-3">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="col-lg-12">
-                      <h2>Estudiante</h2>
+                      <h2>
+                        <FormattedMessage id="student" />
+                      </h2>
                       <hr />
                       <p id="Nombre_estudiante">{entrega.firstName}</p>
                     </div>
                     <hr />
-                    <div className="form-group col-lg-12 text-center">
-                      <h3>Calificación</h3>
+                    {updating ? (
+                      <h2>
+                        <Loading texto={updatingSub} />
+                      </h2>
+                    ) : (
+                      <>
+                        <div className="form-group col-lg-12 text-center">
+                          <h3>
+                            <FormattedMessage id="grade.sustantive" />
+                          </h3>
 
-                      <div id="searchSection" className="mx-3">
-                        <div className="d-flex justify-content-center">
-                          <div className="grade-bar">
-                            <label for="grade" className="color--white-home">
-                              -
-                            </label>
-                            <input
-                              className="filter grade-input"
-                              type="text"
-                              name="grade"
-                              ref={register()}
-                              value={entrega.grade == null || entrega.grade == "" ? "": entrega.grade}
-                              id="grade"
-                            />
-                            <a href="#" className="grade-icon">
-                              /5
-                            </a>
+                          <div id="searchSection" className="mx-3">
+                            <div className="d-flex justify-content-center">
+                              <div className="grade-bar">
+                                <label
+                                  for="grade"
+                                  className="color--white-home"
+                                ></label>
+                                <input
+                                  className="filter grade-input"
+                                  type="text"
+                                  name="grade"
+                                  ref={register()}
+                                  placeholder={
+                                    entrega.grade === null ||
+                                    entrega.grade === ""
+                                      ? ""
+                                      : entrega.grade
+                                  }
+                                  id="grade"
+                                />
+                                <a href="#" className="grade-icon">
+                                  /5
+                                </a>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="row-cols-12 text-center">
-                      {entrega.grade == null || entrega.grade == "" ? (
-                        <p id="Alert">Necesita calificar</p>
-                      ) : (
-                        <p id="Alert">Calificado</p>
-                      )}
-                    </div>
-
-                    <div className="form-group col-lg-12 text-left">
-                      
-                        <hr />
-                        <div id="Colapse_coments" className="">
-                          <ul id="Comment_list" className="list col-lg-12">
-                            <li id="inner-item"></li>
-                          </ul>
-                          <div className="form-group">
-                            <label for="comentario">Comentario</label>
-
-                            <textarea
-                              placeholder={entrega.comment}
-                              id="comentario"
-                              name="comment"
-                              ref={register()}
-                              className="form-control "
-                            ></textarea>
-                          </div>
+                        <div className="row-cols-12 text-center">
+                          {entrega.grade === null || entrega.grade === "" ? (
+                            <p id="Alert">
+                              <FormattedMessage id="needs.grading" />
+                            </p>
+                          ) : (
+                            <p id="Alert">
+                              <FormattedMessage id="graded" />
+                            </p>
+                          )}
                         </div>
-                      
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-primary-calificar col-12"
-                      >
-                        {(entrega?.grade == null || entrega?.grade == "")?<>Calificar</>:<>Actualizar</>}
-                      </button>
-                    </div>
+
+                        <div className="form-group col-lg-12 text-left">
+                          <hr />
+                          <div id="Colapse_coments" className="">
+                            <div className="form-group">
+                              <label htmlFor="comentario">
+                                <FormattedMessage id="comment" />
+                              </label>
+
+                              <textarea
+                                placeholder={entrega.comment}
+                                id="comentario"
+                                name="comment"
+                                ref={register()}
+                                className="form-control "
+                              ></textarea>
+                            </div>
+                          </div>
+
+                          <button
+                            type="submit"
+                            className="btn btn-primary btn-primary-calificar col-12"
+                          >
+                            {entrega?.grade === null ||
+                            entrega?.grade === "" ? (
+                              <FormattedMessage id="grade" />
+                            ) : (
+                              <FormattedMessage id="update" />
+                            )}
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </form>
                   <hr />
                   <div className="row text-center">

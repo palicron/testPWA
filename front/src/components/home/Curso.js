@@ -5,13 +5,18 @@ import { AppContext } from "../../context/AppContext";
 
 import CardCursos from "../cardCursos/CardCursos";
 import Loading from "../loading/Loading";
+import { FormattedMessage } from "react-intl";
 
 export default function Curso() {
-  const [data] = useContext(AppContext);
+  const [dataC] = useContext(AppContext);
 
-  const url_cursos = "/omicron/cursos/teacher/" + data.userId;
+  const url_cursos = "/omicron/cursos/teacher/" + dataC.userId;
   const [cursos, setCursos] = useState(null);
 
+  let loadingCourses = "Loading courses";
+  if (navigator.language.startsWith("es")) {
+    loadingCourses = "Cargando cursos";
+  }
   useEffect(() => {
     if (!navigator.onLine) {
       if (sessionStorage.getItem("Cursos") === "") {
@@ -29,13 +34,12 @@ export default function Curso() {
           }
         });
         setCursos(dataCorr);
-        sessionStorage.setItem("Cursos",JSON.stringify(dataCorr));
+        sessionStorage.setItem("Cursos", JSON.stringify(dataCorr));
       });
     }
   }, [url_cursos]);
 
-
-  let content = <Loading texto="Cargando cursos"></Loading>;
+  let content = <Loading texto={loadingCourses}></Loading>;
 
   if (cursos) {
     content = cursos.map((curso, index) => (
@@ -52,7 +56,9 @@ export default function Curso() {
   return (
     <div>
       <section id="principalSection" className="mx-3 my-3 mt-5">
-        <h1 className="mb-4">Todos los cursos</h1>
+        <h1 className="mb-4">
+          <FormattedMessage id="home.courses" />
+        </h1>
         <div
           className="row row-cols-2 row-cols-lg-3 row-cols-xl-4"
           id="allCourses"

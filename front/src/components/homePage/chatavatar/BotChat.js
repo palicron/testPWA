@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./BotChat.css";
-import config from "../../../config";
+import config_es from "../../../config_es";
+import config_en from "../../../config_en";
 import ActionProvider from "../../../ActionProvider";
 import MessageParser from "../../../MessageParser";
 import { Chatbot } from "react-chatbot-kit";
 
 export default function BotChat() {
+  let config = config_en;
+  if (navigator.language.startsWith("es")) {
+    config = config_es;
+  }
   const [click, setClick] = useState(false);
 
   const handleClick = () => setClick(!click);

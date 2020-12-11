@@ -4,7 +4,26 @@
 .menu-list-entregas {
   cursor: pointer;
 }
+.icon-order{
+  width: 20px;
+  margin-left: 5px;
+}
 
 .bottom-entregas {
   z-index: -1;
 }
+.btn-primary-entregas {
+  border-style: none;
+  background-color: #028579;
+}
+.btn-primary-entregas:hover {
+  border-style: none;
+  background-color: #004d40;
+}
+.btn-edit-entregas {
+  margin-top: -110px;
+  margin-right: -105px;
+  position: absolute;
+  right: 100px;
+}
+

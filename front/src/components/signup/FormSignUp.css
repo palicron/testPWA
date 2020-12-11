@@ -1,4 +1,4 @@
-.section-as-signup {
+/*.section-as-signup {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,36 +103,89 @@ button.btn {
   z-index: 10;
 }
 
-.text-field-as-signup {
-  display: flex;
-  justify-content: center;
-}
+*/
 
-.text-form-signup {
-  text-align: center;
+.form-inputs-up p {
+  color: red;
 }
 
 .container-signup {
   margin-top: 1rem;
 }
 
-.container-signup-as {
+.text-form-signup {
+  text-align: center;
+}
+
+.section-as-signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-step-signup {
   max-width: 1024px;
-  height: 100vh;
+  margin-top: 0px;
 }
 
-.btn-primary-form-succes {
-  padding: 8px;
-  background-color: #3f51b5;
-  border-radius: 10px;
-  font-size: 15px;
+.form-inputs-up {
+  margin-bottom: 0.9rem;
 }
 
-.btn-success-as {
+.color-text-succes {
   color: #fff;
 }
 
-.btn-success-as:hover {
+.color-text-succes:hover {
   color: #fff;
+
   text-decoration: none;
+}
+
+.form-input-up {
+  display: block;
+  padding-left: 10px;
+  outline: none;
+  border-radius: 2px;
+  height: 40px;
+  border: 2px solid "#000";
+  border-radius: 5px;
+}
+
+.width-role {
+  display: block;
+  padding-left: 10px;
+  outline: none;
+  border-radius: 2px;
+  height: 40px;
+  border: 2px solid "#000";
+  background-color: #fff;
+  border-radius: 5px;
+  width: 100%;
+}
+.container-as__up {
+  row-gap: 1rem;
+}
+
+.container-grid-up {
+  max-width: 1224px;
+  display: grid;
+  padding-top: 1rem;
+  grid-template-columns: 100%;
+  width: 100%;
+  grid-column-gap: 3rem;
+}
+
+.button--color-purple {
+  background-color: #6200ee;
+}
+
+@media screen and (min-width: 766px) {
+  .bd-up {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    text-align: initial;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

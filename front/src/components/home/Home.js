@@ -7,6 +7,7 @@ import Rating from "@material-ui/lab/Rating";
 import Box from "@material-ui/core/Box";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
+import { FormattedMessage } from "react-intl";
 
 export default function Home(props) {
   //
@@ -70,159 +71,6 @@ export default function Home(props) {
     props.collapseNavbar();
   };
 
-  const actividades = [
-    {
-      id: 1,
-      nombre: "Taller de lectura",
-      materia: "Ingles",
-      curso: "5A",
-      QR: "urlqr1",
-      Fecha_vencimiento: "2020-10-30",
-      Entregas:
-        "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-      image: "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-    },
-    {
-      id: 2,
-      nombre: "Ejercicio",
-      QR: "urlqr2",
-      materia: "Inglés",
-      curso: "5A",
-      Fecha_vencimiento: "2020-11-12",
-      Entregas:
-        "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-      image: "",
-    },
-    {
-      id: 3,
-      nombre: "Gramática",
-      QR: "urlqr2",
-      materia: "Ingles",
-      curso: "5B",
-      Fecha_vencimiento: "2020-11-13",
-      Entregas:
-        "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-      image: "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-    },
-    {
-      id: 4,
-      nombre: "Escritura",
-      QR: "urlqr2",
-      materia: "Ingles",
-      curso: "5B",
-      Fecha_vencimiento: "2020-12-18",
-      Entregas:
-        "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-      image: "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-    },
-    {
-      id: 5,
-      nombre: "Ejercicios",
-      QR: "urlqr2",
-      materia: "Matematicas",
-      curso: "5B",
-      Fecha_vencimiento: "2020-12-13",
-      Entregas:
-        "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-      image: "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-    },
-  ];
-
-  const state = {
-    actividades: [
-      {
-        id: 1,
-        nombre: "Taller de lectura",
-        materia: "Ingles",
-        curso: "5A",
-        QR: "urlqr1",
-        Fecha_vencimiento: "2020-10-30",
-        Entregas:
-          "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-        image:
-          "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-      },
-      {
-        id: 2,
-        nombre: "Ejercicio",
-        QR: "urlqr2",
-        materia: "Inglés",
-        curso: "5A",
-        Fecha_vencimiento: "2020-11-12",
-        Entregas:
-          "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-        image: "",
-      },
-      {
-        id: 3,
-        nombre: "Gramática",
-        QR: "urlqr2",
-        materia: "Ingles",
-        curso: "5B",
-        Fecha_vencimiento: "2020-11-13",
-        Entregas:
-          "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-        image:
-          "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-      },
-      {
-        id: 4,
-        nombre: "Escritura",
-        QR: "urlqr2",
-        materia: "Ingles",
-        curso: "5B",
-        Fecha_vencimiento: "2020-12-18",
-        Entregas:
-          "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-        image:
-          "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-      },
-      {
-        id: 5,
-        nombre: "Ejercicios",
-        QR: "urlqr2",
-        materia: "Matematicas",
-        curso: "5B",
-        Fecha_vencimiento: "2020-12-13",
-        Entregas:
-          "https://gist.github.com/nicolash0125/f3f589cdd5bb25be78374f9dcbfce62a/raw/4998333df9e3fb0e3a6088a8d62a8904d4e6b411/entregasAct1.json",
-        image:
-          "https://csnaturales.files.wordpress.com/2008/07/actividades.png",
-      },
-    ],
-    inputValue: "",
-  };
-
-  function ordenarPorPropiedad(propiedad) {
-    return function (a, b) {
-      if (a[propiedad] > b[propiedad]) {
-        return 1;
-      } else if (a[propiedad] < b[propiedad]) {
-        return -1;
-      }
-
-      return 0;
-    };
-  }
-
-  function ordenarActividadesFecha() {
-    actividades.sort(ordenarPorPropiedad("Fecha_vencimiento"));
-  }
-
-  ordenarActividadesFecha();
-
-  const filterOnChange = (event) => {
-    console.log("onChange: ", event.target.value);
-    state.inputValue = event.target.value;
-    console.log(state.inputValue);
-
-    //return filteredActividades;
-  };
-
-  let filteredActividades = state.actividades.filter((item) => {
-    return item.nombre.toLowerCase().includes(state.inputValue.toLowerCase());
-  });
-
   /*<div id="searchSection" className="mx-3">
             <div className="d-flex justify-content-left">
               <div className="searchbar">
@@ -278,26 +126,24 @@ export default function Home(props) {
           <section id="proximasActividadesSection" className="mx-3 my-3 mt-5">
             <div className="row no-gutters">
               <div className="col-md-6 col-xl-5 col-12">
-                <h2 className="mb-4">Próximas actividades</h2>
+                <h2 className="mb-4">
+                  <FormattedMessage id="home.next.activities" />
+                </h2>
                 <ul className="list-unstyled" id="allNextActivities">
-                  {filteredActividades.map((actividad) => (
-                    <MediaActividades
-                      key={actividad.id}
-                      curso={actividad.curso}
-                      nombre={actividad.nombre}
-                      fechaVencimiento={actividad.Fecha_vencimiento}
-                      image={actividad.image}
-                    ></MediaActividades>
-                  ))}
+                  <MediaActividades />
                 </ul>
               </div>
               <div className="col"></div>
               <div className="col-md-5 col-xl-6 col-12">
                 <div className="row no-gutters pink">
-                  <h2 className="mx-auto">Funcionalidad en desarrollo...</h2>
-                  <hr></hr>
-                  <h3 className="mx-auto">Tu imagen de perfil</h3>
-                  <hr></hr>
+                  <h2 className="mx-auto">
+                    <FormattedMessage id="home.develop.function" />
+                  </h2>
+                  <hr className="hr-nocolor" />
+                  <h3 className="mx-auto">
+                    <FormattedMessage id="home.profile" />
+                  </h3>
+                  <hr className="hr-nocolor" />
                   <div className="profile mx-auto">
                     <div className="card cardProfile">
                       <div className="firstinfo" id="beforeProfileImage">
@@ -310,9 +156,11 @@ export default function Home(props) {
                       </div>
                     </div>
                   </div>
-                  <hr />
-                  <h3 className="mx-auto">Califica nuestra plataforma</h3>
-                  <hr />
+                  <hr className="hr-nocolor" />
+                  <h3 className="mx-auto">
+                    <FormattedMessage id="home.rate" />
+                  </h3>
+                  <hr className="hr-nocolor" />
                   <div className="mx-auto">
                     <Box component="fieldset" mb={3} borderColor="transparent">
                       <Rating
@@ -337,7 +185,7 @@ export default function Home(props) {
               Icons by Icons8 |
             </small>
             <small className="website-rights color--black-footer-home">
-              &nbsp; Imágenes de cursos tomadas de: &nbsp;
+              &nbsp; <FormattedMessage id="home.footer.references" /> &nbsp;
               <a
                 className="color--blue-footer-home"
                 href="https://ichef.bbci.co.uk/news/410/cpsprodpb/164EE/production/_109347319_gettyimages-611195980.jpg"

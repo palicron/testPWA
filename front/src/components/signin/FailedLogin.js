@@ -3,6 +3,7 @@ import "./FailedLogin.css";
 import { Button } from "../button/Button";
 import { Link } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
+import { FormattedMessage } from "react-intl";
 
 import { BsArrow90DegLeft } from "react-icons/bs";
 
@@ -11,16 +12,14 @@ export default function FailedLogin() {
     <main>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Brand href="/">
-            {" "}
-            <BsArrow90DegLeft /> Volver a inicio
+            <BsArrow90DegLeft /> <FormattedMessage id="landing.navbar.home"/>
           </Navbar.Brand>
         </Navbar>
       <div className="wrap-user-not">
         <div className="container-user-not">
-          <h1>El usuario no existe</h1>
+          <h1><FormattedMessage id="login.failed.main.title"/></h1>
           <p>
-            Parece que intentas loguearte con un usuario que no existe en
-            nuestra base de datos.
+          <FormattedMessage id="login.failed.main.description"/>
           </p>
           <div className="container-failed-login">
             <div className="btn-failed-login">
@@ -28,14 +27,14 @@ export default function FailedLogin() {
               <Button
                    
                     buttonColor="blue-button"
-                  >Volver a intentar</Button>
+                  ><FormattedMessage id="login.failed.main.try.again"/></Button>
               </Link>
             </div>
             <div className="btn-failed-login">
               <Link to="/signin" className="form-btn-margin">
               <Button
                    buttonColor="blue-button"
-                  >Registrarse</Button>
+                  ><FormattedMessage id="login.register"/></Button>
               </Link>
             </div>
             

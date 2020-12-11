@@ -13,6 +13,18 @@ const [
   GetSubjetActivitis
 ] = require("../controllers/actividades");
 
+const [
+  getStats, 
+  getStatsSubject, 
+  getStatsCourse, 
+  insertStats,
+  insertActivity,
+  addSubmission,
+  updateGrade,
+  deleteSubmission,
+  deleteActivity
+] = require("../controllers/statisticsActivities");
+
 // Get all actividades en el db
 router.get("/", async function (req, res, next) {
   const Actividades = await GetAllActividades();
@@ -34,6 +46,8 @@ router.get("/:subjectId/subject", async function (req, res, next) {
 router.post("/:Materiaid/createActivity", async function (req, res, next) {
   const materia = await addAvtividad(req.body, req.params.Materiaid);
   const id = materia.ops[0]._id;
+  const getActividadMateria = await GetActividad(id);
+  const actiStats = await insertActivity(getActividadMateria.period, req.params.Materiaid, getActividadMateria._id, getActividadMateria.percentage);
   res.send(id);
 });
 //PUT actulisa una actividad 

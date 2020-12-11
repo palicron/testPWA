@@ -5,11 +5,15 @@ import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import Loading from "../loading/Loading";
 import { Link } from "react-router-dom";
+import { FormattedMessage } from "react-intl";
 
 export default function Materias(props) {
   const [data] = useContext(AppContext);
   console.log(data);
-
+  let loadingSubjects="Loading subjects"
+  if(navigator.language.startsWith('es')){
+    loadingSubjects="Cargando materias"
+  }
   const url =
     "/omicron/materias/teacher/" + data.userId + "/course/" + data.idCourse;
 
@@ -58,7 +62,7 @@ export default function Materias(props) {
                 <Link to="/home" className="breadcrumb-item-color">Home</Link>
               </li>
               <li className="breadcrumb-item breadcrumb-item-coloractive" aria-current="page">
-                Materias
+                <FormattedMessage id="subjects"/>
               </li>
             </ol>
           </nav>
@@ -68,17 +72,18 @@ export default function Materias(props) {
             <div className="col-12">
               <div className="row materias container-fluid rounded">
                 <div className="col-lg-12 col-md-12 bottomMargin">
-                  <h1 className="mt-3">Mis materias</h1>
+                  <h1 className="mt-3"><FormattedMessage id="my.subjects"/></h1>
                 </div>
 
                 {materias == null ? (
-                  <Loading texto="Cargando materias..."></Loading>
+                  <Loading texto={loadingSubjects}></Loading>
                 ) : (
                   materias.map((materia, index) => (
                     <CardMaterias
                       key={index}
                       id={materia._id}
                       materia={materia.name}
+                      imgMateria={materia.image}
                     ></CardMaterias>
                   ))
                 )}

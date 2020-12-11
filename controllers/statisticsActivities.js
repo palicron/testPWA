@@ -46,7 +46,7 @@ function getStatsCourse(periodo, courseId, idTeacher) {
         return client
         .db(dataBase)
         .collection(COLLECTION_NAME)
-        .find({ periodo: periodo, curso: courseId, profesor: ObjectId(idTeacher)})
+        .find({ periodo: periodo, curso: ObjectId(courseId), profesor: ObjectId(idTeacher)})
         .toArray()
         .finally(() => client.close());
     });
@@ -93,7 +93,7 @@ function insertActivity(periodo, idSubject, idActivity, percentage) {
         idActividad: ObjectId(idActivity),
         sumNotas: 0,
         totalNotas: 0,
-        porcentajeNotas: percentage,
+        porcentaje: percentage,
         totalEntregas: 0
     }
 
@@ -101,8 +101,8 @@ function insertActivity(periodo, idSubject, idActivity, percentage) {
         return client
         .db(dataBase)
         .collection(COLLECTION_NAME)
-        .update(
-            { periodo: periodo, materia: ObjectId(idSubject) },
+        .updateOne(
+            { materia: ObjectId(idSubject) },
             { $push:{ actividades: newActivity } }
         )
         .finally(() => client.close());
@@ -121,7 +121,7 @@ function addSubmission(idActivity) {
         return client
         .db(dataBase)
         .collection(COLLECTION_NAME)
-        .update(
+        .updateOne(
             { },
             { $inc: { "actividades.$[elem].totalEntregas": 1 } },
             { arrayFilters: [ { "elem.idActividad": ObjectId(idActivity) } ] }
@@ -141,9 +141,9 @@ function updateGrade(idActivity, grade) {
         return client
         .db(dataBase)
         .collection(COLLECTION_NAME)
-        .update(
+        .updateOne(
             { },
-            { $inc: { "actividades.$[elem].sumNotas": grade, "actividades.$[elem].totalNotas": 1 } },
+            { $inc: { "actividades.$[elem].sumNotas": parseInt(grade), "actividades.$[elem].totalNotas": 1 } },
             { arrayFilters: [ { "elem.idActividad": ObjectId(idActivity) } ] }
         )
         .finally(() => client.close());
@@ -189,7 +189,7 @@ function deleteActivity(idActivity) {
         )
         .finally(() => client.close());
     });
-}
+} 
 
 module.exports = [
     getStats,
@@ -202,3 +202,4 @@ module.exports = [
     deleteSubmission,
     deleteActivity
 ];
+

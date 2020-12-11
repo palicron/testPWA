@@ -1,10 +1,18 @@
 var express = require("express");
 var router = express.Router();
 
-var [
-    getStatsA, getStatsSubjectA, getStatsCourseA
+const [
+    getStatsA,
+    getStatsSubjectA,
+    getStatsCourseA,
+    insertStats,
+    insertActivity,
+    addSubmission,
+    updateGrade,
+    deleteSubmission,
+    deleteActivity
 ] = require("../controllers/statisticsActivities");
-var [
+const [
     getStatsS, getStatsSubjectS, getStatsCourseS
 ] = require("../controllers/statisticsStudents");
 
@@ -47,7 +55,7 @@ router.get("/:idProfesor/:periodo", async function (req, res, next) {
 
     //Student submission
     let qtysStudentSubmissions = statsLogic.studentSubmissions(statsStudents, statsActivities, idProfesor, -1);
-    qtys.push({id: 5, qtysStudentSubmissions});
+    qtys.push({id: 5, cantidades: qtysStudentSubmissions});
     
     res.send(qtys);
 });
@@ -90,8 +98,9 @@ router.get("/:idProfesor/:periodo/:idCurso", async function (req, res, nect) {
 
     //Student submission
     let qtysStudentSubmissions = statsLogic.studentSubmissions(statsStudents, statsActivities, idProfesor, -1);
-    qtys.push({id: 5, qtysStudentSubmissions});
+    qtys.push({id: 5, cantidades: qtysStudentSubmissions});
 
+    
     res.send(qtys);
 });
 

@@ -1,12 +1,22 @@
-.cargandoActividades{
-    padding: 5px;
-    text-align: center;
+.cargandoActividades {
+  padding: 5px;
+  text-align: center;
 }
-.icon-order{
-    width: 20px;
-    margin-left: 5px;
+.icon-order {
+  width: 20px;
+  margin-left: 5px;
 }
-.icon-create{
-    width: 40px;
-    margin-right: 10px;
+.icon-create {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.btn-primary-actividades {
+  border-style: none;
+  background-color: #028579;
+}
+
+.btn-primary-actividades:hover {
+  border-style: none;
+  background-color: #004d40;
 }

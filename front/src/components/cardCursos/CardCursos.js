@@ -5,9 +5,13 @@ import { AppContext } from "../../context/AppContext";
 
 export default function CardCursos({ id, curso, numMaterias, image }) {
   const [data, setData] = useContext(AppContext);
-
-  let textMaterias = " materia";
+  let textMaterias = "subject"
   textMaterias = numMaterias > 1 ? textMaterias + "s" : textMaterias;
+  if(navigator.language.startsWith("es")){
+    textMaterias = " materia";
+
+    textMaterias = numMaterias > 1 ? textMaterias + "s" : textMaterias;
+  }
 
   function handleClick() {
     setData({ ...data, idCourse: id, nameCourse: curso });

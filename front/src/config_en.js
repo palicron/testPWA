@@ -3,10 +3,10 @@ import React from "react";
 import { createChatBotMessage } from "react-chatbot-kit";
 import BotAvatar from "./components/homePage/chatavatar/BotAvatar";
 
-const config = {
+const config_es = {
   initialMessages: [
-    createChatBotMessage(`Hola soy Omicromio!, ¿en qué te puedo ayudar hoy?`),
-    createChatBotMessage(`1. ¿Cómolos contacto?\n2. ¿Qué hacemos?\n3. ¿Quiénes somos?`),
+    createChatBotMessage(`Hello I'm Omicromio!, What can i help you with?`),
+    createChatBotMessage(`1. Contact information\n2. What do we do?\n3. About us`),
   ],
   botName: "Omicromio",
   customComponents: {
@@ -28,4 +28,4 @@ const config = {
   },
 };
 
-export default config;
+export default config_es;
